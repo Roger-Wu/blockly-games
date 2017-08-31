@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Neil Fraser <fraser@google.com>",
-		"lastupdated": "2017-08-25 14:54:12.012212",
+		"lastupdated": "2017-08-30 17:33:52.064680",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -228,12 +228,14 @@
 	"Pond.counterName": "Counter",
 	"Pond.rookName": "Rook",
 	"Pond.sniperName": "Sniper",
-	"DrinkShop_getNewCup": "get a new cup",
-	"DrinkShop_fillCupWith": "fill the cup with",
-	"DrinkShop_fillCupWithVolume": "fill the cup with",
+	"DrinkShop_getNewCup": "get a new %1 cup",
+	"DrinkShop_fillCupWith": "fill the cup with %2 ml of %1 ",
 	"DrinkShop_ml": "ml",
 	"DrinkShop_coverCup": "cover the cup",
 	"DrinkShop_serve": "serve the cup",
+	"DrinkShop_small": "small",
+	"DrinkShop_medium": "medium",
+	"DrinkShop_large": "large",
 	"DrinkShop_blackTea": "black tea",
 	"DrinkShop_greenTea": "green tea",
 	"DrinkShop_milkTea": "milk tea",

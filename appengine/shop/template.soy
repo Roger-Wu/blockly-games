@@ -29,13 +29,18 @@
 {template .messages}
   {call BlocklyGames.soy.messages /}
   <div style="display: none">
-    <span id="DrinkShop_getNewCup">{msg meaning="DrinkShop_getNewCup" desc="block text - robot gets a cup"}get a new cup{/msg}</span>
-    <span id="DrinkShop_fillCupWith">{msg meaning="DrinkShop_fillCupWith" desc="block text - robot fills the cup with drink"}fill the cup with{/msg}</span>
-    <span id="DrinkShop_fillCupWithVolume">{msg meaning="DrinkShop_fillCupWithVolume" desc="block text - robot fills the cup with a volume of drink"}fill the cup with{/msg}</span>
+    <span id="DrinkShop_getNewCup">{msg meaning="DrinkShop_getNewCup" desc="block text - robot gets a new cup"}get a new %1 cup{/msg}</span>
+    <span id="DrinkShop_fillCupWith">{msg meaning="DrinkShop_fillCupWith" desc="block text - robot fills the cup with drink"}fill the cup with %2 ml of %1 {/msg}</span>
     <span id="DrinkShop_ml">{msg meaning="DrinkShop_ml" desc="block text - ml"}ml{/msg}</span>
     <span id="DrinkShop_coverCup">{msg meaning="DrinkShop_coverCup" desc="block text - robot covers the cup"}cover the cup{/msg}</span>
     <span id="DrinkShop_serve">{msg meaning="DrinkShop_serve" desc="block text - robot serves what it is holding"}serve the cup{/msg}</span>
 
+    // sizes
+    <span id="DrinkShop_small">{msg meaning="DrinkShop_small" desc="block text - small"}small{/msg}</span>
+    <span id="DrinkShop_medium">{msg meaning="DrinkShop_medium" desc="block text - medium"}medium{/msg}</span>
+    <span id="DrinkShop_large">{msg meaning="DrinkShop_large" desc="block text - large"}large{/msg}</span>
+
+    // materials
     <span id="DrinkShop_blackTea">{msg meaning="DrinkShop_blackTea" desc="block text - black tea"}black tea{/msg}</span>
     <span id="DrinkShop_greenTea">{msg meaning="DrinkShop_greenTea" desc="block text - green tea"}green tea{/msg}</span>
     <span id="DrinkShop_milkTea">{msg meaning="DrinkShop_milkTea" desc="block text - milk tea"}milk tea{/msg}</span>
@@ -44,6 +49,7 @@
     <span id="DrinkShop_ice">{msg meaning="DrinkShop_ice" desc="block text - ice"}ice{/msg}</span>
     <span id="DrinkShop_boba">{msg meaning="DrinkShop_boba" desc="block text - boba"}boba{/msg}</span>
 
+    // error messages
     <span id="DrinkShop_msg_noServedDrink">{msg meaning="DrinkShop_msg_noServedDrink" desc="game message"}The customer didn't get their tea.{/msg} &#x1F641;</span>
     <span id="DrinkShop_msg_servedMultiple">{msg meaning="DrinkShop_msg_servedMultiple" desc="game message"}The customer received more than 1 cup of drink.{/msg} &#x1F641;</span>
     <span id="DrinkShop_msg_cupEmpty">{msg meaning="DrinkShop_msg_cupEmpty" desc="game message"}The cup is empty.{/msg}</span>
@@ -294,8 +300,8 @@
         <div id="drink-shop-level-desc-container">
           <div class="drink-shop-level-desc-title">關卡目標</div>
           <div id="drink-shop-level-desc-goal" class="drink-shop-level-desc-text"></div>
-          <div class="drink-shop-level-desc-title">關卡敘述</div>
-          <div id="drink-shop-level-desc" class="drink-shop-level-desc-text"></div>
+          <div class="drink-shop-level-desc-title">提示</div>
+          <div id="drink-shop-level-desc-hint" class="drink-shop-level-desc-text"></div>
         </div>
         <div id="capacityBubble">
           <div id="capacity"></div>
@@ -365,10 +371,34 @@
  */
 {template .toolbox}
   <xml id="all-blocks" style="display: none;">
-    <block type="DrinkShop_getNewCup" id="block_DrinkShop_getNewCup"></block>
-    <block type="DrinkShop_fillCupWith" id="block_DrinkShop_fillCupWith"></block>
+    // <block type="DrinkShop_getNewCup" id="block_DrinkShop_getNewCup"></block>
+    <block type="DrinkShop_size" id="block_DrinkShop_size">
+      <field name="SIZE">medium</field>
+    </block>
+
+    <block type="DrinkShop_getNewCup" id="block_DrinkShop_getNewCup">
+      <value name="SIZE">
+        <shadow type="DrinkShop_size">
+          <field name="SIZE">medium</field>
+        </shadow>
+      </value>
+    </block>
+
+    <block type="DrinkShop_fillCupWith" id="block_DrinkShop_fillCupWith">
+      <value name="MATERIAL">
+        <shadow type="DrinkShop_material"></shadow>
+      </value>
+      <value name="VOLUME">
+        <shadow type="math_number">
+          <field name="NUM">500</field>
+        </shadow>
+      </value>
+    </block>
+
     <block type="DrinkShop_coverCup" id="block_DrinkShop_coverCup"></block>
     <block type="DrinkShop_serve" id="block_DrinkShop_serve"></block>
+    <block type="DrinkShop_material" id="block_DrinkShop_material"></block>
+    <block type="DrinkShop_percent" id="block_DrinkShop_percent"></block>
     <block type="DrinkShop_fillCupWithVolume" id="block_DrinkShop_fillCupWithVolume">
       <value name="VOLUME">
         <shadow type="math_number">

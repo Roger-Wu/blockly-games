@@ -33,9 +33,9 @@ goog.require('Blockly.JavaScript.math');
 // goog.require('Blockly.Blocks.procedures');
 // goog.require('Blockly.JavaScript.procedures');
 
-// goog.require('Blockly.Blocks.texts');  // Deprecated
-// goog.require('Blockly.Constants.Text');
-// goog.require('Blockly.JavaScript.texts');
+goog.require('Blockly.Blocks.texts');  // Deprecated
+goog.require('Blockly.Constants.Text');
+goog.require('Blockly.JavaScript.texts');
 
 // goog.require('Blockly.Blocks.variables');  // Deprecated.
 // goog.require('Blockly.Constants.Variables');
@@ -57,6 +57,13 @@ Blockly.Blocks['DrinkShop_getNewCup'] = {
   init: function() {
     this.jsonInit({
       "message0": BlocklyGames.getMsg('DrinkShop_getNewCup'),
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "SIZE",
+          "check": "String"
+        }
+      ],
       "previousStatement": null,
       "nextStatement": null,
       "colour": Scope_Blocks.MOVEMENT_HUE,
@@ -65,50 +72,49 @@ Blockly.Blocks['DrinkShop_getNewCup'] = {
   }
 }
 Blockly.JavaScript['DrinkShop_getNewCup'] = function(block) {
-  return 'getNewCup();\n';
+  var size = Blockly.JavaScript.valueToCode(block, 'SIZE',
+  Blockly.JavaScript.ORDER_ATOMIC) || '';
+  var code = 'getNewCup(' + size + ');\n';
+  return code;
+};
+
+Blockly.Blocks['DrinkShop_size'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "SIZE",
+          "options": [
+            [ BlocklyGames.getMsg('DrinkShop_small'), "small" ],
+            [ BlocklyGames.getMsg('DrinkShop_medium'), "medium" ],
+            [ BlocklyGames.getMsg('DrinkShop_large'), "large" ],
+          ]
+        },
+      ],
+      "output": "String",
+      "colour": Blockly.Constants.Text.HUE,
+      "tooltip": "",
+    });
+  }
+}
+Blockly.JavaScript['DrinkShop_size'] = function(block) {
+  var size = block.getFieldValue('SIZE');
+  var code = '"' + size + '"';
+  var order = Blockly.JavaScript.ORDER_ATOMIC;
+  return [code, order];
 };
 
 Blockly.Blocks['DrinkShop_fillCupWith'] = {
   init: function() {
     this.jsonInit({
-      "message0": BlocklyGames.getMsg('DrinkShop_fillCupWith') + " %1",
+      "message0": BlocklyGames.getMsg('DrinkShop_fillCupWith'),
       "args0": [
         {
-          "type": "field_dropdown",
-          "name": "drink_dropdown",
-          "options": [
-            [ BlocklyGames.getMsg('DrinkShop_blackTea'), "black tea" ],
-            [ BlocklyGames.getMsg('DrinkShop_greenTea'), "green tea" ],
-          ]
-        }
-      ],
-      "previousStatement": null,
-      "nextStatement": null,
-      "colour": Scope_Blocks.MOVEMENT_HUE,
-      "tooltip": BlocklyGames.getMsg('DrinkShop_fillCupWith'),
-    });
-  }
-}
-Blockly.JavaScript['DrinkShop_fillCupWith'] = function(block) {
-  var drink_str = block.getFieldValue('drink_dropdown');
-  return 'fillCupWith("' + drink_str + '");\n';
-};
-
-Blockly.Blocks['DrinkShop_fillCupWithVolume'] = {
-  init: function() {
-    this.jsonInit({
-      "message0": BlocklyGames.getMsg('DrinkShop_fillCupWithVolume') + " %1 %2 " + BlocklyGames.getMsg('DrinkShop_ml'),
-      "args0": [
-        {
-          "type": "field_dropdown",
+          "type": "input_value",
           "name": "MATERIAL",
-          "options": [
-            [ BlocklyGames.getMsg('DrinkShop_blackTea'), "black tea" ],
-            [ BlocklyGames.getMsg('DrinkShop_greenTea'), "green tea" ],
-            [ BlocklyGames.getMsg('DrinkShop_milk'), "milk" ],
-            // [ BlocklyGames.getMsg('DrinkShop_ice'), "ice" ],
-            [ BlocklyGames.getMsg('DrinkShop_boba'), "boba" ],
-          ]
+          "check": "String"
         },
         {
           "type": "input_value",
@@ -119,16 +125,44 @@ Blockly.Blocks['DrinkShop_fillCupWithVolume'] = {
       "previousStatement": null,
       "nextStatement": null,
       "colour": Scope_Blocks.MOVEMENT_HUE,
-      "tooltip": BlocklyGames.getMsg('DrinkShop_fillCupWithVolume'),
+      "tooltip": BlocklyGames.getMsg('DrinkShop_fillCupWith'),
     });
   }
 }
-Blockly.JavaScript['DrinkShop_fillCupWithVolume'] = function(block) {
+Blockly.JavaScript['DrinkShop_fillCupWith'] = function(block) {
+  var material = Blockly.JavaScript.valueToCode(block, 'MATERIAL', Blockly.JavaScript.ORDER_ATOMIC) || 0;
+  var volume = Blockly.JavaScript.valueToCode(block, 'VOLUME', Blockly.JavaScript.ORDER_ATOMIC) || 0;
+  return 'fillCupWith(' + material + ', ' + volume + ');\n';
+};
+
+Blockly.Blocks['DrinkShop_material'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "MATERIAL",
+          "options": [
+            [ BlocklyGames.getMsg('DrinkShop_blackTea'), "black tea" ],
+            [ BlocklyGames.getMsg('DrinkShop_greenTea'), "green tea" ],
+            [ BlocklyGames.getMsg('DrinkShop_milk'), "milk" ],
+            [ BlocklyGames.getMsg('DrinkShop_boba'), "boba" ],
+            // [ BlocklyGames.getMsg('DrinkShop_ice'), "ice" ],
+          ]
+        },
+      ],
+      "output": "String",
+      "colour": Blockly.Constants.Text.HUE,
+      "tooltip": "",
+    });
+  }
+}
+Blockly.JavaScript['DrinkShop_material'] = function(block) {
   var material = block.getFieldValue('MATERIAL');
-  var volume = Blockly.JavaScript.valueToCode(block, 'VOLUME',
-  Blockly.JavaScript.ORDER_COMMA) || 0;
-  console.log(volume);
-  return 'fillCupWithVolume("' + material + '", ' + volume + ');\n';
+  var code = '"' + material + '"';
+  var order = Blockly.JavaScript.ORDER_ATOMIC;
+  return [code, order];
 };
 
 Blockly.Blocks['DrinkShop_coverCup'] = {
@@ -159,4 +193,39 @@ Blockly.Blocks['DrinkShop_serve'] = {
 }
 Blockly.JavaScript['DrinkShop_serve'] = function(block) {
   return 'serve();\n';
+};
+
+Blockly.Blocks['DrinkShop_percent'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "PERCENT",
+          "options": [
+            ["0%", "0"],
+            ["10%", "0.1"],
+            ["20%", "0.2"],
+            ["30%", "0.3"],
+            ["40%", "0.4"],
+            ["50%", "0.5"],
+            ["60%", "0.6"],
+            ["70%", "0.7"],
+            ["80%", "0.8"],
+            ["90%", "0.9"],
+            ["100%", "1"],
+          ]
+        },
+      ],
+      "output": "Number",
+      "colour": Blockly.Constants.Math.HUE,
+      "tooltip": "",
+    });
+  }
+}
+Blockly.JavaScript['DrinkShop_percent'] = function(block) {
+  var percent = block.getFieldValue('PERCENT');
+  console.log(percent);
+  return percent;
 };

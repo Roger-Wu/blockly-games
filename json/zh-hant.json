@@ -234,12 +234,16 @@
 	"Pond.rookName": "車",
 	"Pond.sniperName": "狙擊手",
 
-	"DrinkShop_getNewCup": "拿取一個新杯子",
-	"DrinkShop_fillCupWith": "在杯中裝滿",
-	"DrinkShop_fillCupWithVolume": "在杯中裝入",
+	"DrinkShop_getNewCup": "拿取一個新的 %1 杯子",
+	"DrinkShop_fillCupWith": "在杯中裝入 %2 毫升的 %1 ",
 	"DrinkShop_ml": "毫升",
 	"DrinkShop_coverCup": "將杯子蓋上蓋子",
 	"DrinkShop_serve": "將杯子交給客人",
+
+	"DrinkShop_small": "小",
+	"DrinkShop_medium": "中",
+	"DrinkShop_large": "大",
+
 	"DrinkShop_blackTea": "紅茶",
 	"DrinkShop_greenTea": "綠茶",
 	"DrinkShop_milkTea": "奶茶",

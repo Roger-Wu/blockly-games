@@ -57,15 +57,21 @@ Shop.Game.Config.levels = [
   undefined,
   // Level 1
   {
-    blockIds: ['block_DrinkShop_getNewCup', 'block_DrinkShop_fillCupWith', 'block_DrinkShop_coverCup'],
+    blockIds: [
+      'block_DrinkShop_getNewCup',
+      'block_DrinkShop_fillCupWith',
+      'block_DrinkShop_coverCup',
+    ],
     scale: 1.25,
     goal: "製作一杯紅茶。",
-    desc:
-    '請將程式積木拉到右邊空白的程式編輯區，<br />' +
-    '並由上到下依照正確順序拼接，<br />' +
-    '然後按下下方的「執行程式」按鈕，<br />' +
-    '讓機器人幫你製作一杯紅茶。<br />' +
-    '<img src=\"shop/public/hints/zh/level_1_hint.png\" class=\"hint-img\" alt=\"level 1 hint\" width=\"250\">',
+    hint:
+    '請將程式積木拉到右邊的空白區域，<br />' +
+    '由上到下依照正確順序拼接。<br />' +
+    '<img src=\"shop/public/hints/zh/level_1_hint_1.gif\" class=\"hint-img\" alt=\"level 1 hint\" width=\"250\">' +
+    '<br />' +
+    '按下下方的「執行程式」按鈕，<br />' +
+    '讓機器人執行你寫的程式。<br />' +
+    '<img src=\"shop/public/hints/zh/level_1_hint_2.png\" class=\"hint-img\" alt=\"level 1 hint\" width=\"250\">',
     getInitialShopState: function() {
       return {
         money: 0,
@@ -105,12 +111,16 @@ Shop.Game.Config.levels = [
   },
   // Level 2
   {
-    blockIds: ['block_DrinkShop_getNewCup', 'block_DrinkShop_fillCupWith', 'block_DrinkShop_coverCup'],
+    blockIds: [
+      'block_DrinkShop_getNewCup',
+      'block_DrinkShop_fillCupWith',
+      'block_DrinkShop_coverCup',
+    ],
     scale: 1.25,
     goal: "製作一杯綠茶。",
-    desc:
+    hint:
     '你可以點擊程式積木中的選單來選擇不同的飲料。<br />' +
-    '<img src="shop/public/hints/zh/level_2_hint.png" class="hint-img" alt="level 2 hint" width="250">',
+    '<img src="shop/public/hints/zh/level_2_hint.gif" class="hint-img" alt="level 2 hint" width="250">',
     getInitialShopState: function() {
       return {
         money: 0,
@@ -150,10 +160,14 @@ Shop.Game.Config.levels = [
   },
   // Level 3
   {
-    blockIds: ['block_DrinkShop_getNewCup', 'block_DrinkShop_fillCupWithVolume', 'block_DrinkShop_coverCup'],
+    blockIds: [
+      'block_DrinkShop_getNewCup',
+      'block_DrinkShop_fillCupWith',
+      'block_DrinkShop_coverCup'
+    ],
     scale: 1,
     goal: "製作一杯奶茶。",
-    desc:
+    hint:
     '杯子的容量是 500 毫升。<br />' +
     '<br />' +
     '本店的奶茶，<br />' +
@@ -224,10 +238,14 @@ Shop.Game.Config.levels = [
   },
   // Level 4
   {
-    blockIds: ['block_DrinkShop_getNewCup', 'block_DrinkShop_fillCupWithVolume', 'block_DrinkShop_coverCup'],
+    blockIds: [
+      'block_DrinkShop_getNewCup',
+      'block_DrinkShop_fillCupWith',
+      'block_DrinkShop_coverCup'
+    ],
     scale: 1,
     goal: "製作一杯珍珠奶茶。",
-    desc:
+    hint:
     '本店的珍珠奶茶，<br />' +
     '原料有珍珠、紅茶、牛奶，<br />' +
     '珍珠要佔據杯子容量的20%，<br />' +
@@ -302,13 +320,99 @@ Shop.Game.Config.levels = [
   {
     blockIds: [
       'block_DrinkShop_getNewCup',
-      'block_DrinkShop_fillCupWithVolume',
+      'block_DrinkShop_fillCupWith',
       'block_DrinkShop_coverCup',
       'block_math_arithmetic',
     ],
     scale: 0.875,
     goal: "製作一杯珍珠奶綠。<br />讓機器人幫你計算各種原料的體積。",
-    desc:
+    hint:
+    '本店的珍珠奶綠，<br />' +
+    '原料有珍珠、綠茶、牛奶，<br />' +
+    '珍珠要佔據杯子容量的20%，<br />' +
+    '綠茶：牛奶的比例是65:35。<br />' +
+    '<br />' +
+    '在前一關，你自己算出了珍珠奶茶的各種原料的體積，<br />' +
+    '但珍珠奶綠的原料比例更複雜，沒這麼容易計算。<br />' +
+    '但不用擔心，我們的機器人很擅長計算，<br />' +
+    '你可以在程式中寫算式，讓機器人幫你計算。<br />' +
+    '<img src="shop/public/hints/zh/level_5_hint_1.png" class="hint-img" alt="level 5 hint 1" width="200">' +
+    '<img src="shop/public/hints/zh/level_5_hint_2.png" class="hint-img" alt="level 5 hint 2" width="250">',
+    getInitialShopState: function() {
+      return {
+        money: 0,
+        remainingTime: 40,
+        materials: {
+          blackTea: 500,
+          greenTea: 500,
+          milk: 500,
+          boba: 500,
+          cup: 1,
+        }
+      };
+    },
+    checkLevelComplete: function() {
+      var robot = Game.getRobot();
+      // not holding a cup
+      if (!robot.holding || robot.holding.class !== "cup") {
+        throw Game.levelFailedMessage('DrinkShop_msg_noCup');
+      }
+
+      var cup = robot.holding;
+      // cup is empty
+      if (Object.keys(cup.filled).length === 0) {
+        throw Game.levelFailedMessage('DrinkShop_msg_cupEmpty');
+      }
+
+      // no green tea in cup
+      if (!cup.filled.hasOwnProperty("green tea")) {
+        throw Game.levelFailedMessage('DrinkShop_msg_noGreenTea');
+      }
+      // no milk in cup
+      if (!cup.filled.hasOwnProperty("milk")) {
+        throw Game.levelFailedMessage('DrinkShop_msg_noMilk');
+      }
+      // no boba in cup
+      if (!cup.filled.hasOwnProperty("boba")) {
+        throw Game.levelFailedMessage('DrinkShop_msg_noBoba');
+      }
+
+      // cup not full
+      if (cup.filledVolume < 499.9) {
+        throw Game.levelFailedMessage('DrinkShop_msg_cupNotFull');
+      }
+
+      // not only black tea and milk and boba
+      if (Object.keys(cup.filled).length > 3) {
+        throw Game.levelFailedMessage('DrinkShop_msg_tooManyMaterials');
+      }
+
+      // not correct proportion
+      if (cup.filled["boba"] !== 100 || cup.filled["green tea"] !== 260 || cup.filled["milk"] !== 140) {
+        throw Game.levelFailedMessage('DrinkShop_msg_notCorrectProportion');
+      }
+
+      // cup not covered
+      if (!cup.isCovered) {
+        throw Game.levelFailedMessage('DrinkShop_msg_cupNotCovered');
+      }
+
+      return true;
+    },
+  },
+  // Level 6
+  {
+    blockIds: [
+      'block_DrinkShop_getNewCup',
+      'block_DrinkShop_fillCupWithVolume',
+      'block_DrinkShop_coverCup',
+      'block_math_arithmetic',
+      'block_DrinkShop_material',
+      'block_DrinkShop_percent',
+    ],
+    scale: 0.875,
+    goal: "製作一杯珍珠奶綠。<br />讓機器人幫你計算各種原料的體積。",
+    hint:
     '本店的珍珠奶綠，<br />' +
     '原料有珍珠、綠茶、牛奶，<br />' +
     '珍珠要佔據杯子容量的20%，<br />' +

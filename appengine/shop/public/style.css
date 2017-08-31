@@ -74,6 +74,10 @@ img[src$="help_down.png"] {
 
 /* Buttons */
 
+button {
+  cursor: pointer;
+}
+
 button.primary {
   /* Can't use "text-align: start" due to IE. */
   text-align: center;
@@ -209,22 +213,26 @@ html[dir="RTL"] button.primary {
 
 .drink-shop-level-desc-title {
   color: #00838F;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   background-color: #B2EBF2;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
 .drink-shop-level-desc-text {
-  margin-bottom: 15px;
+  margin-bottom: 30px;
   text-align: center;
+  font-size: 16px;
 }
 
 .hint-img {
   display: block;
-  margin: 15px auto;
-  border: 1px solid #eee;
+  margin: 10px auto;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #eee #ddd #ccc;
+  border-radius: 4px;
 }
 
 .svg-clock-circle {

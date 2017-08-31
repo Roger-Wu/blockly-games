@@ -26,7 +26,7 @@ Game.init = function(level) {
 
   Game.initState();
   Game.UI.init(Game.state.shop);
-  document.getElementById('drink-shop-level-desc').innerHTML = Game.levelConfig.desc;
+  document.getElementById('drink-shop-level-desc-hint').innerHTML = Game.levelConfig.hint;
   document.getElementById('drink-shop-level-desc-goal').innerHTML = Game.levelConfig.goal;
 };
 
@@ -86,7 +86,7 @@ Game.earnMoney = function(money) {
 
 Game.commands = {};
 
-Game.commands.getNewCup = function() {
+Game.commands.getNewCup = function(size) {
   // data
   var robot = Game.getRobot();
   robot.holding = {
@@ -102,7 +102,7 @@ Game.commands.getNewCup = function() {
   Game.UI.getNewCup(robot.holding);
 };
 
-Game.commands.fillCupWith = function(materialName) {
+Game.commands.fillCupWith = function(materialName, volume) {
   var robot = Game.getRobot();
 
   // check error
@@ -116,45 +116,10 @@ Game.commands.fillCupWith = function(materialName) {
   }
 
   var cup = robot.holding;
-  var volume = cup.capacity; // - cup.filledVolume;
+  // var volume = cup.capacity; // - cup.filledVolume;
 
   // error: drink will overflow
   if (volume > cup.capacity - cup.filledVolume) {
-    throw Game.errorMessage('DrinkShop_fillCupWithVolume', 'DrinkShop_msg_drinkOverflow');
-  }
-
-  Game.spendTime(Game.constants.robot.actions.fillCup.timeSpent);
-
-  if (volume > 0) {
-    // data
-    if (!cup.filled.hasOwnProperty(materialName)) {
-      cup.filled[materialName] = 0;
-    }
-    cup.filled[materialName] += volume;
-    cup.filledVolume += volume;
-    // UI
-    Game.UI.updateCup(cup);
-  }
-};
-
-Game.commands.fillCupWithVolume = function(materialName, volume) {
-  var robot = Game.getRobot();
-
-  // check error
-  if (!robot.holding || robot.holding.class !== "cup") {
-    console.log("command error: robot not holding a cup");
-    throw Game.errorMessage('DrinkShop_fillCupWith', 'DrinkShop_msg_noCup');
-  }
-  if (!!robot.holding.isCovered) {
-    console.log("command error: cup has been covered");
-    throw Game.errorMessage('DrinkShop_fillCupWith', 'DrinkShop_msg_cupCovered');
-  }
-
-  var cup = robot.holding;
-
-  // error: drink will overflow
-  if (volume > cup.capacity - cup.filledVolume) {
-    console.log("command error: drink will overflow");
     throw Game.errorMessage('DrinkShop_fillCupWithVolume', 'DrinkShop_msg_drinkOverflow');
   }
 
