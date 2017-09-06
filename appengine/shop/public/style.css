@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+body {
+  overflow: hidden;
+}
+
 #blockly {
   position: absolute;
   top: 0;
@@ -201,9 +205,8 @@ html[dir="RTL"] button.primary {
   width: calc(65vw - 370px);
   height: 100%;
   padding: 15px;
-  overflow: scroll;
+  overflow: auto;
   text-align: center;
-  min-width: 300px;
 }
 
 #drink-shop-code-editor .blocklyFlyout,
@@ -223,11 +226,13 @@ html[dir="RTL"] button.primary {
 .drink-shop-level-desc-text {
   margin-bottom: 30px;
   text-align: center;
-  font-size: 16px;
+  font-size: 20px;
 }
 
 .hint-img {
   display: block;
+  width: 100%;
+  max-width: 300px;
   margin: 10px auto;
   border-width: 1px;
   border-style: solid;

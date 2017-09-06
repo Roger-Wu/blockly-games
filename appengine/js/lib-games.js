@@ -242,13 +242,11 @@ BlocklyGames.init = function() {
 
   // Fixes viewport for small screens.
   var viewport = document.querySelector('meta[name="viewport"]');
-  if (viewport && screen.availWidth < 725) {
-    viewport.setAttribute('content',
-        'width=device-width, initial-scale=.6, user-scalable=no');
-  }
-  else if (viewport && screen.availWidth < 1025) {
-    viewport.setAttribute('content',
-        'width=device-width, initial-scale=.8, user-scalable=no');
+  if (viewport) {
+    var targetWidth = 1280;
+    var width = screen.availWidth;
+    var scale = (width / targetWidth).toFixed(4);
+    viewport.setAttribute('content','width=' + targetWidth.toString() + ', initial-scale=' + scale.toString() + ', user-scalable=no');
   }
 
   // Lazy-load Google analytics.

@@ -43,3 +43,19 @@ BlocklyGames.workspace = Blockly.inject('blockly', {
   },
 });
 ```
+
+## 螢幕大小與縮放 responsive
+
+### 預設的縮放方法：veiwport initial-scale
+```js
+// Fixes viewport for small screens.
+var viewport = document.querySelector('meta[name="viewport"]');
+if (viewport && screen.availWidth < 725) {
+   viewport.setAttribute('content', 'width=725, initial-scale=.35, user-scalable=no');
+}
+```
+
+缺點：只有兩段
+
+### 修改後的方法：永遠以寬度 1280px 顯示
+
