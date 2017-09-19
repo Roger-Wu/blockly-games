@@ -11,13 +11,21 @@ All code is free and open source.
 # Development
 
 ## 基本開發流程
-* 官方wiki(務必閱讀Build的部分): https://github.com/google/blockly-games/wiki
+* 官方wiki(務必閱讀Build的部分，瞭解基本操作方式): https://github.com/google/blockly-games/wiki
 * Getting Started
-    * 安裝google cloud SDK
-    * fork and clone blockly games
-    * $ cd blockly-games; make maze-en
-        * 這樣會壓縮maze-en的code進到用來serve的compressed.js
-    * $ cd appengine; dev_appserver.py app.yaml
+    * 安裝 google cloud SDK
+    * clone blockly games
+        ```sh
+        $ git clone git@github.com:Roger-Wu/blockly-games.git
+        $ cd blockly-games;
+        ```
+    * checkout 到正確的 branch （以 drink-shop 為例）
+        `$ git checkout drink-shop`
+    * 首次執行必須下載 third-party 的檔案
+        `$ make deps`
+    * compile 並壓縮遊戲的 JavaScript 檔案（以 drink-shop 為例）
+        `$ make shop` (這樣會壓縮code進到用來serve的compressed.js)
+    * `$ cd appengine; dev_appserver.py app.yaml`
         * 這一行是啟動localhost的server
         * 如果出現 `ImportError: No module named 'setup'` ，可能是python版本錯誤的關係，預設的`python`指令必須是 python 2 而不是 python 3
     * go to http://localhost:8080/
