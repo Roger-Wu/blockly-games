@@ -235,7 +235,7 @@
 	"Pond.sniperName": "狙擊手",
 
 	"DrinkShop_getNewCup": "拿取一個新的 %1 杯子",
-	"DrinkShop_fillCupWith": "在杯中裝入 %2 毫升的 %1 ",
+	"DrinkShop_fillCupWith": "在杯中裝入 %1 %2 毫升",
 	"DrinkShop_ml": "毫升",
 	"DrinkShop_coverCup": "將杯子蓋上蓋子",
 	"DrinkShop_serve": "將杯子交給客人",

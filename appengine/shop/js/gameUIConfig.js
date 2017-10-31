@@ -8,17 +8,87 @@ var scale = 100;
 var middleX = scale / 2;
 var middleY = scale / 2;
 
-Config.colors = {};
+Config.materialConfigs = {
+  "black tea": {
+    color: {r: 192, g: 64, b: 0, a: 0.75},
+    colorWeight: 1,
+    state: "liquid",
+  },
+  "green tea": {
+    color: {r: 224, g: 200, b: 48, a: 0.75},
+    colorWeight: 1,
+    state: "liquid",
+  },
+  "milk": {
+    color: {r: 255, g: 255, b: 240, a: 1},
+    colorWeight: 2,
+    state: "liquid",
+  },
+  "boba": {
+    color: {r: 64, g: 32, b: 0, a: 1},
+    colorWeight: 0,
+    state: "solid",
+  },
+};
 
-Config.colors["black tea"] = {r: 192, g: 64, b: 0, a: 0.75};
-Config.colors["green tea"] = {r: 224, g: 200, b: 48, a: 0.75};
-Config.colors["milk"] = {r: 255, g: 255, b: 240, a: 1};
+Config.colors = {
+  "black tea": {r: 192, g: 64, b: 0, a: 0.75},
+  "green tea": {r: 224, g: 200, b: 48, a: 0.75},
+  "milk": {r: 255, g: 255, b: 240, a: 1},
+  "boba": {r: 32, g: 0, b: 0, a: 1},
+};
+
+Config.colorWeight = {
+  "black tea": 1,
+  "green tea": 1,
+  "milk": 2,
+  "boba": 0,
+};
 
 Config.getMaterialColor = function(materialName) {
-  if (Config.colors.hasOwnProperty(materialName)) {
-    return Config.colors[materialName];
+  if (Config.materialConfigs.hasOwnProperty(materialName)) {
+    return Config.materialConfigs[materialName].color;
   }
   return {r: 0, g: 0, b: 0, a: 0};
+}
+
+Config.getMaterialColorWeight = function(materialName) {
+  if (Config.materialConfigs.hasOwnProperty(materialName)) {
+    return Config.materialConfigs[materialName].colorWeight;
+  }
+  return 0;
+}
+
+Config.rgbaToStr = function(rgba) {
+  return "rgba({0}, {1}, {2}, {3})".format(
+    parseInt(rgba.r),
+    parseInt(rgba.g),
+    parseInt(rgba.b),
+    rgba.a
+  );
+}
+
+Config.rgbaToRgb = function(rgba) {
+  // the displayed rgb on white background
+  return {
+    r: rgba.r * rgba.a + 255 * (1-rgba.a),
+    g: rgba.g * rgba.a + 255 * (1-rgba.a),
+    b: rgba.b * rgba.a + 255 * (1-rgba.a),
+    a: 1,
+  }
+}
+
+Config.getMaterialColorStr = function(materialName) {
+  return Config.rgbaToStr(Config.getMaterialColor(materialName));
+}
+
+Config.decideTextColor = function(rgba) {
+  // https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
+  var rgb = Config.rgbaToRgb(rgba);
+  if ((rgb.r * 0.299 + rgb.g * 0.587 + rgb.b * 0.114) > 186) {
+    return "black";
+  }
+  return "white";
 }
 
 Config.cup = {

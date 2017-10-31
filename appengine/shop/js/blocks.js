@@ -165,6 +165,54 @@ Blockly.JavaScript['DrinkShop_material'] = function(block) {
   return [code, order];
 };
 
+// bg: black tea, green tea
+Blockly.Blocks['DrinkShop_material_bg'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "MATERIAL",
+          "options": [
+            [ BlocklyGames.getMsg('DrinkShop_blackTea'), "black tea" ],
+            [ BlocklyGames.getMsg('DrinkShop_greenTea'), "green tea" ],
+          ]
+        },
+      ],
+      "output": "String",
+      "colour": Blockly.Constants.Text.HUE,
+      "tooltip": "",
+    });
+  }
+}
+Blockly.JavaScript['DrinkShop_material_bg'] = Blockly.JavaScript['DrinkShop_material'];
+
+// bgm: black tea, green tea, milk
+Blockly.Blocks['DrinkShop_material_bgm'] = {
+  init: function() {
+    this.jsonInit({
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "MATERIAL",
+          "options": [
+            [ BlocklyGames.getMsg('DrinkShop_blackTea'), "black tea" ],
+            [ BlocklyGames.getMsg('DrinkShop_greenTea'), "green tea" ],
+            [ BlocklyGames.getMsg('DrinkShop_milk'), "milk" ],
+          ]
+        },
+      ],
+      "output": "String",
+      "colour": Blockly.Constants.Text.HUE,
+      "tooltip": "",
+    });
+  }
+}
+Blockly.JavaScript['DrinkShop_material_bgm'] = Blockly.JavaScript['DrinkShop_material'];
+
+
 Blockly.Blocks['DrinkShop_coverCup'] = {
   init: function() {
     this.jsonInit({

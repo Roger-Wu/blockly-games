@@ -32,7 +32,10 @@ BlocklyInterface.nextLevel = function() {
 
 Scope.initBlocklyDivSize = function () {
   // resize blocklyDiv width
-  var blocklyFlyoutWidth = document.getElementsByClassName('blocklyFlyout')[0].clientWidth;
+  var blocklyFlyoutElem = document.getElementsByClassName('blocklyFlyout')[0]
+  var blocklyFlyoutWidth = blocklyFlyoutElem.clientWidth || blocklyFlyoutElem.width.baseVal.value;
+  blocklyFlyoutWidth = Math.round(blocklyFlyoutWidth);
+
   document.getElementById('blockly').style.width = "calc(35vw + " + blocklyFlyoutWidth + "px)";
   document.getElementById('drink-shop-code-editor-left').style.width = "calc(65vw - 50px - " + blocklyFlyoutWidth + "px)";
   Blockly.svgResize(BlocklyGames.workspace);
@@ -101,7 +104,7 @@ Scope.init = function() {
   var shopContainer = document.getElementById('drink-shop-shop-container');
   // blocklyWidgetDiv's (the dropdown menu in blockly blocks) z-index is 99999
   // dialog's z-index is 9
-  shopContainer.style.zIndex = "7";
+  shopContainer.style.zIndex = "0";
 
   var showCodeEditor = function(event) {
     shopContainer.style.zIndex = "0";

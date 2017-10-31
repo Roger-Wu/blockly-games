@@ -1,7 +1,7 @@
 {
 	"@metadata": {
 		"author": "Neil Fraser <fraser@google.com>",
-		"lastupdated": "2017-08-30 17:33:52.064680",
+		"lastupdated": "2017-10-31 19:52:53.783817",
 		"locale": "en",
 		"messagedocumentation" : "qqq"
 	},
@@ -229,7 +229,7 @@
 	"Pond.rookName": "Rook",
 	"Pond.sniperName": "Sniper",
 	"DrinkShop_getNewCup": "get a new %1 cup",
-	"DrinkShop_fillCupWith": "fill the cup with %2 ml of %1 ",
+	"DrinkShop_fillCupWith": "fill the cup with %1 %2 ml",
 	"DrinkShop_ml": "ml",
 	"DrinkShop_coverCup": "cover the cup",
 	"DrinkShop_serve": "serve the cup",

@@ -3,6 +3,9 @@
  */
 
 goog.provide('Shop.Game.Config');
+goog.require('BlocklyGames');
+
+var Game = Shop.Game;
 
 Shop.Game.Config.constants = {
   shop: {
@@ -59,19 +62,32 @@ Shop.Game.Config.levels = [
   {
     blockIds: [
       'block_DrinkShop_getNewCup',
-      'block_DrinkShop_fillCupWith',
+      'block_DrinkShop_fillCupWith_material_bg',
       'block_DrinkShop_coverCup',
     ],
-    scale: 1.25,
-    goal: "製作一杯紅茶。",
+    scale: 1,
+    goal:
+    '製作一杯中杯紅茶。' +
+    '<div id="recipe-cup-container"></div>',
     hint:
-    '請將程式積木拉到右邊的空白區域，<br />' +
-    '由上到下依照正確順序拼接。<br />' +
-    '<img src=\"shop/public/hints/zh/level_1_hint_1.gif\" class=\"hint-img\" alt=\"level 1 hint\" width=\"250\">' +
-    '<br />' +
-    '按下下方的「執行程式」按鈕，<br />' +
-    '讓機器人執行你寫的程式。<br />' +
-    '<img src=\"shop/public/hints/zh/level_1_hint_2.png\" class=\"hint-img\" alt=\"level 1 hint\" width=\"250\">',
+    '請將程式積木拉到右邊的空白區域，<br/>' +
+    '由上到下依照正確順序拼接。<br/>' +
+    '<img src="shop/public/hints/zh/level_1_hint_1.gif" class="hint-img" alt="level 1 hint">' +
+    '<br/>' +
+    '按下下方的「執行程式」按鈕，<br/>' +
+    '讓機器人執行你寫的程式。<br/>' +
+    '<img src="shop/public/hints/zh/level_1_hint_2.png" class="hint-img" alt="level 1 hint">',
+    // call this after BlocklyGames initialized so that BlocklyGames.getMsg works
+    getRecipe: function() {
+      return [
+        {
+          material: 'black tea',
+          text1: BlocklyGames.getMsg('DrinkShop_blackTea'),
+          text2: '500' + BlocklyGames.getMsg('DrinkShop_ml'),
+          percent: 100,
+        },
+      ];
+    },
     getInitialShopState: function() {
       return {
         money: 0,
@@ -99,6 +115,16 @@ Shop.Game.Config.levels = [
       if (!cup.filled.hasOwnProperty("black tea")) {
         throw Game.levelFailedMessage('DrinkShop_msg_notBlackTea');
       }
+
+      // cup not full
+      if (cup.filledVolume < 499.99) {
+        throw Game.levelFailedMessage('DrinkShop_msg_cupNotFull');
+      }
+
+      // not only black tea
+      if (Object.keys(cup.filled).length > 1) {
+        throw Game.levelFailedMessage('DrinkShop_msg_tooManyMaterials');
+      }
       // TODO: check more
 
       // cup not covered
@@ -113,14 +139,25 @@ Shop.Game.Config.levels = [
   {
     blockIds: [
       'block_DrinkShop_getNewCup',
-      'block_DrinkShop_fillCupWith',
+      'block_DrinkShop_fillCupWith_material_bg',
       'block_DrinkShop_coverCup',
     ],
-    scale: 1.25,
-    goal: "製作一杯綠茶。",
+    scale: 1,
+    goal: '製作一杯中杯綠茶。' +
+    '<div id="recipe-cup-container"></div>',
     hint:
-    '你可以點擊程式積木中的選單來選擇不同的飲料。<br />' +
-    '<img src="shop/public/hints/zh/level_2_hint.gif" class="hint-img" alt="level 2 hint" width="250">',
+    '點擊程式積木中的選單來選擇不同的飲料。<br/>' +
+    '<img src="shop/public/hints/zh/level_2_hint.gif" class="hint-img" alt="level 2 hint">',
+    getRecipe: function() {
+      return [
+        {
+          material: 'green tea',
+          text1: BlocklyGames.getMsg('DrinkShop_greenTea'),
+          text2: '500' + BlocklyGames.getMsg('DrinkShop_ml'),
+          percent: 100,
+        },
+      ];
+    },
     getInitialShopState: function() {
       return {
         money: 0,
@@ -148,6 +185,16 @@ Shop.Game.Config.levels = [
       if (!cup.filled.hasOwnProperty("green tea")) {
         throw Game.levelFailedMessage('DrinkShop_msg_notGreenTea');
       }
+
+      // cup not full
+      if (cup.filledVolume < 499.99) {
+        throw Game.levelFailedMessage('DrinkShop_msg_cupNotFull');
+      }
+
+      // not only green tea
+      if (Object.keys(cup.filled).length > 1) {
+        throw Game.levelFailedMessage('DrinkShop_msg_tooManyMaterials');
+      }
       // TODO: check more
 
       // cup not covered
@@ -162,23 +209,31 @@ Shop.Game.Config.levels = [
   {
     blockIds: [
       'block_DrinkShop_getNewCup',
-      'block_DrinkShop_fillCupWith',
+      'block_DrinkShop_fillCupWith_material_bgm',
       'block_DrinkShop_coverCup'
     ],
     scale: 1,
-    goal: "製作一杯奶茶。",
+    goal: '製作一杯中杯奶茶。' +
+    '<div id="recipe-cup-container"></div>',
     hint:
-    '杯子的容量是 500 毫升。<br />' +
-    '<br />' +
-    '本店的奶茶，<br />' +
-    '原料是紅茶和牛奶，<br />' +
-    '紅茶：牛奶的比例是6:4。<br />' +
-    '所以，<br />' +
-    '紅茶的體積是 500 × 0.6 = ??? 毫升，<br />' +
-    '牛奶的體積是 500 × 0.4 = ??? 毫升。<br />' +
-    '<br />' +
-    '你可以輸入不同的數字來改變飲料倒入的量。<br />' +
-    '<img src="shop/public/hints/zh/level_3_hint.png" class="hint-img" alt="level 3 hint" width="250">',
+    '你可以輸入不同的數字來改變飲料倒入的量。<br/>' +
+    '<img src="shop/public/hints/zh/level_3_hint.png" class="hint-img" alt="level 3 hint">',
+    getRecipe: function() {
+      return [
+        {
+          material: 'milk',
+          text1: BlocklyGames.getMsg('DrinkShop_milk'),
+          text2: '200' + BlocklyGames.getMsg('DrinkShop_ml'),
+          percent: 40,
+        },
+        {
+          material: 'black tea',
+          text1: BlocklyGames.getMsg('DrinkShop_blackTea'),
+          text2: '300' + BlocklyGames.getMsg('DrinkShop_ml'),
+          percent: 60,
+        },
+      ];
+    },
     getInitialShopState: function() {
       return {
         money: 0,
@@ -214,7 +269,7 @@ Shop.Game.Config.levels = [
       }
 
       // cup not full
-      if (cup.filledVolume < 499.9) {
+      if (cup.filledVolume < 499.99) {
         throw Game.levelFailedMessage('DrinkShop_msg_cupNotFull');
       }
 
@@ -244,16 +299,30 @@ Shop.Game.Config.levels = [
       'block_DrinkShop_coverCup'
     ],
     scale: 1,
-    goal: "製作一杯珍珠奶茶。",
-    hint:
-    '本店的珍珠奶茶，<br />' +
-    '原料有珍珠、紅茶、牛奶，<br />' +
-    '珍珠要佔據杯子容量的20%，<br />' +
-    '紅茶：牛奶的比例一樣要維持6:4。<br />' +
-    '所以，<br />' +
-    '珍珠的體積是 500 × 0.2 = ??? 毫升，<br />' +
-    '紅茶的體積是 500 × (1 - 0.2) × 0.6 = ??? 毫升，<br />' +
-    '牛奶的體積是 500 × (1 - 0.2) × 0.4 = ??? 毫升。<br />',
+    goal: '製作一杯中杯珍珠奶茶。' +
+    '<div id="recipe-cup-container"></div>',
+    getRecipe: function() {
+      return [
+        {
+          material: 'milk',
+          text1: BlocklyGames.getMsg('DrinkShop_milk'),
+          text2: '160' + BlocklyGames.getMsg('DrinkShop_ml'),
+          percent: 32,
+        },
+        {
+          material: 'black tea',
+          text1: BlocklyGames.getMsg('DrinkShop_blackTea'),
+          text2: '240' + BlocklyGames.getMsg('DrinkShop_ml'),
+          percent: 48,
+        },
+        {
+          material: 'boba',
+          text1: BlocklyGames.getMsg('DrinkShop_boba'),
+          text2: '100' + BlocklyGames.getMsg('DrinkShop_ml'),
+          percent: 20,
+        },
+      ];
+    },
     getInitialShopState: function() {
       return {
         money: 0,
@@ -294,7 +363,7 @@ Shop.Game.Config.levels = [
       }
 
       // cup not full
-      if (cup.filledVolume < 499.9) {
+      if (cup.filledVolume < 499.99) {
         throw Game.levelFailedMessage('DrinkShop_msg_cupNotFull');
       }
 
@@ -320,33 +389,46 @@ Shop.Game.Config.levels = [
   {
     blockIds: [
       'block_DrinkShop_getNewCup',
-      'block_DrinkShop_fillCupWith',
+      'block_DrinkShop_fillCupWith_material_bgm',
       'block_DrinkShop_coverCup',
       'block_math_arithmetic',
     ],
-    scale: 0.875,
-    goal: "製作一杯珍珠奶綠。<br />讓機器人幫你計算各種原料的體積。",
+    scale: 1,
+    goal: '製作一杯中杯奶綠。' +
+    '<div id="recipe-cup-container"></div>',
     hint:
-    '本店的珍珠奶綠，<br />' +
-    '原料有珍珠、綠茶、牛奶，<br />' +
-    '珍珠要佔據杯子容量的20%，<br />' +
-    '綠茶：牛奶的比例是65:35。<br />' +
-    '<br />' +
-    '在前一關，你自己算出了珍珠奶茶的各種原料的體積，<br />' +
-    '但珍珠奶綠的原料比例更複雜，沒這麼容易計算。<br />' +
-    '但不用擔心，我們的機器人很擅長計算，<br />' +
-    '你可以在程式中寫算式，讓機器人幫你計算。<br />' +
-    '<img src="shop/public/hints/zh/level_5_hint_1.png" class="hint-img" alt="level 5 hint 1" width="200">' +
-    '<img src="shop/public/hints/zh/level_5_hint_2.png" class="hint-img" alt="level 5 hint 2" width="250">',
+    '我們也經常用百分比來記錄各種原料的比例，<br/>' +
+    '在製作飲料時，<br/>' +
+    '要根據杯子的容量計算出實際的毫升數。<br/>' +
+    '<br/>' +
+    '有時候，實際的毫升數不容易計算，<br/>' +
+    '你可以使用乘法積木，<br/>' +
+    '讓機器人自己計算出實際數值。<br/>' +
+    '<img src="shop/public/hints/zh/hint_multiply.png" class="hint-img" alt="hint multiply">',
+    getRecipe: function() {
+      return [
+        {
+          material: 'milk',
+          text1: BlocklyGames.getMsg('DrinkShop_milk'),
+          text2: '35%',
+          percent: 35,
+        },
+        {
+          material: 'green tea',
+          text1: BlocklyGames.getMsg('DrinkShop_greenTea'),
+          text2: '65%',
+          percent: 65,
+        },
+      ];
+    },
     getInitialShopState: function() {
       return {
         money: 0,
-        remainingTime: 40,
+        remainingTime: 30,
         materials: {
           blackTea: 500,
           greenTea: 500,
           milk: 500,
-          boba: 500,
           cup: 1,
         }
       };
@@ -372,23 +454,19 @@ Shop.Game.Config.levels = [
       if (!cup.filled.hasOwnProperty("milk")) {
         throw Game.levelFailedMessage('DrinkShop_msg_noMilk');
       }
-      // no boba in cup
-      if (!cup.filled.hasOwnProperty("boba")) {
-        throw Game.levelFailedMessage('DrinkShop_msg_noBoba');
-      }
 
       // cup not full
-      if (cup.filledVolume < 499.9) {
+      if (cup.filledVolume < 499.99) {
         throw Game.levelFailedMessage('DrinkShop_msg_cupNotFull');
       }
 
-      // not only black tea and milk and boba
-      if (Object.keys(cup.filled).length > 3) {
+      // not only green tea and milk
+      if (Object.keys(cup.filled).length > 2) {
         throw Game.levelFailedMessage('DrinkShop_msg_tooManyMaterials');
       }
 
       // not correct proportion
-      if (cup.filled["boba"] !== 100 || cup.filled["green tea"] !== 260 || cup.filled["milk"] !== 140) {
+      if (cup.filled["green tea"] !== 175 || cup.filled["milk"] !== 325) {
         throw Game.levelFailedMessage('DrinkShop_msg_notCorrectProportion');
       }
 
@@ -404,26 +482,38 @@ Shop.Game.Config.levels = [
   {
     blockIds: [
       'block_DrinkShop_getNewCup',
-      'block_DrinkShop_fillCupWithVolume',
+      'block_DrinkShop_fillCupWith',
       'block_DrinkShop_coverCup',
       'block_math_arithmetic',
-      'block_DrinkShop_material',
-      'block_DrinkShop_percent',
     ],
     scale: 0.875,
-    goal: "製作一杯珍珠奶綠。<br />讓機器人幫你計算各種原料的體積。",
+    goal: '製作一杯中杯珍珠奶綠。<br/>' +
+    '<div id="recipe-cup-container"></div>',
     hint:
-    '本店的珍珠奶綠，<br />' +
-    '原料有珍珠、綠茶、牛奶，<br />' +
-    '珍珠要佔據杯子容量的20%，<br />' +
-    '綠茶：牛奶的比例是65:35。<br />' +
-    '<br />' +
-    '在前一關，你自己算出了珍珠奶茶的各種原料的體積，<br />' +
-    '但珍珠奶綠的原料比例更複雜，沒這麼容易計算。<br />' +
-    '但不用擔心，我們的機器人很擅長計算，<br />' +
-    '你可以在程式中寫算式，讓機器人幫你計算。<br />' +
-    '<img src="shop/public/hints/zh/level_5_hint_1.png" class="hint-img" alt="level 5 hint 1" width="200">' +
-    '<img src="shop/public/hints/zh/level_5_hint_2.png" class="hint-img" alt="level 5 hint 2" width="250">',
+    '你可以在乘法積木中再插入乘法積木。<br/>' +
+    '<img src="shop/public/hints/zh/hint_double_multiply.png" class="hint-img" alt="hint double multiply">',
+    getRecipe: function() {
+      return [
+        {
+          material: 'milk',
+          text1: BlocklyGames.getMsg('DrinkShop_milk'),
+          text2: '80% × 35%',
+          percent: 28,
+        },
+        {
+          material: 'green tea',
+          text1: BlocklyGames.getMsg('DrinkShop_greenTea'),
+          text2: '80% × 65%',
+          percent: 52,
+        },
+        {
+          material: 'boba',
+          text1: BlocklyGames.getMsg('DrinkShop_boba'),
+          text2: '20%',
+          percent: 20,
+        },
+      ];
+    },
     getInitialShopState: function() {
       return {
         money: 0,
@@ -464,7 +554,7 @@ Shop.Game.Config.levels = [
       }
 
       // cup not full
-      if (cup.filledVolume < 499.9) {
+      if (cup.filledVolume < 499.99) {
         throw Game.levelFailedMessage('DrinkShop_msg_cupNotFull');
       }
 

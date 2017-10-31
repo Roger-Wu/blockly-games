@@ -5,10 +5,12 @@
 'use strict';
 
 goog.provide('Shop.Game');
+goog.require('Blockly');
 goog.require('Blockly.JavaScript');
 goog.require('Shop.Game.UI');
 goog.require('Shop.utils');
 goog.require('Shop.Game.Config');
+goog.require('Shop.soy');
 
 var Game = Shop.Game;
 // Game.svg = document.getElementById('svgShop');
@@ -26,9 +28,61 @@ Game.init = function(level) {
 
   Game.initState();
   Game.UI.init(Game.state.shop);
-  document.getElementById('drink-shop-level-desc-hint').innerHTML = Game.levelConfig.hint;
+
   document.getElementById('drink-shop-level-desc-goal').innerHTML = Game.levelConfig.goal;
+  if (Game.levelConfig.hint) {
+    document.getElementById('drink-shop-level-desc-hint').innerHTML = Game.levelConfig.hint;
+  } else {
+    document.getElementById('drink-shop-level-desc-hint-title').style.display = 'none';
+  }
+
+  Game.initRecipeCup(Game.levelConfig.getRecipe);
 };
+
+Game.initRecipeCup = function(getRecipe) {
+  var recipeCupContainer = document.getElementById('recipe-cup-container');
+  if (recipeCupContainer && getRecipe) {
+    var recipe = getRecipe();
+
+    recipeCupContainer.innerHTML = Shop.soy.svgRecipeCup({}, null, {});
+
+    var materialGroup = document.getElementById('recipe-cup-material-group');
+    var textContainer = document.getElementById('recipe-cup-text-container');
+    var filledPercent = 0;
+    recipe.forEach(function(material_obj) {
+      var materialColor = Shop.Game.UI.Config.getMaterialColor(material_obj.material);
+      // rect
+      var layerRect = document.createElementNS(Blockly.SVG_NS, 'rect');
+      layerRect.setAttribute('y', filledPercent);
+      layerRect.setAttribute('fill', Shop.Game.UI.Config.rgbaToStr(materialColor));
+      // layerRect.setAttribute('class', 'recipe-cup-material-layer'); // css width height not working in firefox
+      layerRect.setAttribute('width', '100%');
+      layerRect.setAttribute('height', '100%');
+      materialGroup.appendChild(layerRect);
+
+      // TODO: boba
+
+      // text
+      var textColor = Shop.Game.UI.Config.decideTextColor(materialColor); // 'black' or 'white'
+      var layerText1 = document.createElementNS(Blockly.SVG_NS, 'text');
+      layerText1.setAttribute('class', 'recipe-cup-text recipe-cup-text-' + textColor);
+      layerText1.setAttribute('x', '50%');
+      layerText1.setAttribute('y', (filledPercent + material_obj.percent / 2) - 4);
+      layerText1.textContent = material_obj.text1;
+
+      var layerText2 = document.createElementNS(Blockly.SVG_NS, 'text');
+      layerText2.setAttribute('class', 'recipe-cup-text recipe-cup-text-' + textColor);
+      layerText2.setAttribute('x', '50%');
+      layerText2.setAttribute('y', (filledPercent + material_obj.percent / 2) + 4);
+      layerText2.textContent = material_obj.text2;
+
+      textContainer.appendChild(layerText1);
+      textContainer.appendChild(layerText2);
+
+      filledPercent += material_obj.percent;
+    });
+  }
+}
 
 Game.initState = function () {
   Game.state = {
@@ -46,8 +100,8 @@ Game.reset = function () {
   Game.UI.reset(Game.state.shop);
 };
 
-/** private methods
- *
+/**
+ * private methods
  */
 
 Game.getRobot = function() {
@@ -120,7 +174,7 @@ Game.commands.fillCupWith = function(materialName, volume) {
 
   // error: drink will overflow
   if (volume > cup.capacity - cup.filledVolume) {
-    throw Game.errorMessage('DrinkShop_fillCupWithVolume', 'DrinkShop_msg_drinkOverflow');
+    throw Game.errorMessage('DrinkShop_fillCupWith', 'DrinkShop_msg_drinkOverflow');
   }
 
   Game.spendTime(Game.constants.robot.actions.fillCup.timeSpent);
