@@ -382,6 +382,9 @@
  * Toolboxes for each level.
  */
 {template .toolbox}
+  // will copy some blocks from all-blocks to toolbox when init.
+  <xml id="toolbox" style="display: none;"></xml>
+
   <xml id="all-blocks" style="display: none;">
     // <block type="DrinkShop_getNewCup" id="block_DrinkShop_getNewCup"></block>
     <block type="DrinkShop_size" id="block_DrinkShop_size">
@@ -453,8 +456,7 @@
         </shadow>
       </value>
     </block>
-  </xml>
-  <xml id="toolbox" style="display: none;">
+
     // <category id="toolbox-others" colour="330" name="Others">
     // <block type="DrinkShop_getNewCup"></block>
     // <block type="DrinkShop_fillCupWith"></block>
